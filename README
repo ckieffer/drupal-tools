@@ -1,0 +1,19 @@
+A collection of scripts to assist in the management of a local/remote Drupal 6 instance via Subversion
+
+Author: Chad Kieffer, ckieffer at gmail dot com
+
+
+USE
+
+1) Remove the .default extension on drupal_info.sh
+
+2) Edit drupal_info.sh, add local and remote path information for your Drupal instance
+
+3) Download Drupal core/module updates to $DownloadsPath, then run one of the following
+
+
+drupal_update.sh
+Update Drupal core installation 
+
+drupal_module_update.sh
+Update a shared or site-specific Drupal 6 module locally, then remotely via SSH and SVN
