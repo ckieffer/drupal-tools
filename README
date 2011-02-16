@@ -1,4 +1,4 @@
-A collection of scripts to assist in the management of a local/remote Drupal 6 instance via Subversion
+A collection of scripts to assist in the management of a local/remote Drupal 6 or 7 instances via Subversion
 
 Author: Chad Kieffer, ckieffer at gmail dot com
 
@@ -16,4 +16,4 @@ drupal_update.sh
 Update Drupal core installation 
 
 drupal_module_update.sh
-Update a shared or site-specific Drupal 6 module locally, then remotely via SSH and SVN
+Update a shared or site-specific Drupal 6/7 module locally, then remotely via SSH and SVN

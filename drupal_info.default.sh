@@ -16,9 +16,11 @@
 DownloadsPath="/local/path/to/downloads"
 
 LocalBase="/local/path"
-LocalDrupal="drupal"
+LocalDrupal6="drupal-6"
+LocalDrupal7="drupal-7"
 
 RemoteBase="/remote/path"
-RemoteDrupal="drupal"
+RemoteDrupal6="drupal-6"
+RemoteDrupal7="drupal-7"
 
 SSHConnect="you@www.host.com"

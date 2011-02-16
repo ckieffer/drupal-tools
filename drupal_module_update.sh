@@ -4,14 +4,14 @@ export PATH
 
 ###################################################################################################
 #
-#  Update a shared or site-specific Drupal 6 module locally, then remotely via SSH and SVN
+#  Update a shared or site-specific Drupal 6 or 7 module locally, then remotely via SSH and SVN
 #
 #  Author: Chad Kieffer, ckieffer at gmail dot com
 #  
-#  This script streamlines the update and install of Drupal 6 modules in a local subversion working 
-#  copy and then in a remote production installation. It assumes that you're using Subversion, SSH 
-#  to access remote installations, and that modules are installed in either sites/all/modules/ or 
-#  sites/MySite.com/modules/. 
+#  This script streamlines the update and install of Drupal 6 and 7 modules in a local subversion 
+#  working copy and then in a remote production installation. It assumes that you're using  
+#  Subversion, SSH to access remote installations, and that modules are installed in either 
+#  sites/all/modules/ or sites/MySite.com/modules/. 
 #
 #  Install/Configure
 #  1) Save the script locally and make it executable
@@ -37,23 +37,43 @@ export PATH
 # Include Drupal path and remote server connection settings
 source drupal_info.sh
 
+# Determine the first module downloaded to and listed in $DownloadsPath
+DownloadsPkgFilePath=$(ls $DownloadsPath/*-*.x-*.tar.gz | head -n 1)
+PkgFileName=${DownloadsPkgFilePath##*/}  # advanced_help-7.x-1.0-beta1.tar.gz
+PkgBaseName=${PkgFileName%%.tar*}        # advanced_help-7.x-1.0-beta1
+ModuleName=${PkgBaseName%%-*}            # advanced_help
+FullVersion=${PkgBaseName#$ModuleName-*} # 7.x-1.0-beta1    
+                                         # 7.x-2.x-dev
+Version=${FullVersion%.x-*.*}            # 7 #Version=${FullVersion%.x*} 
+
+# Which version are we updating, 6 or 7?
+if [ "$Version" == 7 ]; then
+  LocalDrupal=$LocalDrupal7
+  RemoteDrupal=$RemoteDrupal7
+elif [ "$Version" == 6 ]; then
+  LocalDrupal=$LocalDrupal6
+  RemoteDrupal=$RemoteDrupal6
+else 
+	echo -e "Unable to detemine version."
+	echo -e "PkgFileName: $PkgFileName"
+	echo -e "PkgBaseName: $PkgBaseName"
+	echo -e "ModuleName: $ModuleName"
+	echo -e "FullVersion: $FullVersion"
+	echo -e "Version: $Version"
+	exit 0
+fi
+
 # Paths to drupal/sites
 LocalSites="$LocalBase/$LocalDrupal/sites"
 RemoteSites="$RemoteBase/$RemoteDrupal/sites"
 
-# Determine the first module downloaded to and listed in $DownloadsPath
-DownloadsPkgFilePath=$(ls $DownloadsPath/*-6.x-*.tar.gz | head -n 1)
-PkgFileName=${DownloadsPkgFilePath##*/}
-PkgBaseName=${PkgFileName%%.tar*}
-ModuleName=${PkgBaseName%%-6*}
-
 # Bail if a module's not found
 if [ "$ModuleName" == "" ]; then
-	echo -e "\n No module packages found in $DownloadsPath"
-	echo -e "\n Nothing to do!"
-	exit 0
+  echo -e "\n No module packages found in $DownloadsPath"
+  echo -e "\n Nothing to do!"
+  exit 0
 else
-	echo -e "\n Beginning update to $PkgBaseName"
+  echo -e "\n Beginning update to $PkgBaseName"
 fi
 
 # Is this a shared or site-specific module?
@@ -126,7 +146,10 @@ if [ -e "$DownloadsPkgFilePath" ]; then
     if [ -d $LocalTgtPath ]; then
       echo -ne "Do you want to install $ModuleName there? (y/n): "
       read $Install
-      if [ $Install == "y"]; then
+      if [ "$Install" == "n" ]; then
+        echo -e "\n Okay, maybe later then."
+        exit 0
+      else
         update_module
       fi
     fi
