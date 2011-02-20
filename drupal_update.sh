@@ -27,7 +27,7 @@ export PATH
 ###################################################################################################
 
 # Include Drupal path and remote server connection settings
-source drupal_info.sh
+source ./drupal_info.sh
 
 # Which version are we updating, 6 or 7?
 echo -ne "\nWhich version of Drupal, 6 or 7 (leave empty 6): "
@@ -52,6 +52,7 @@ echo "Updating local Drupal $Version to $DrupalPkgBase"
 if [ -e "$DrupalPkg" ]; then
   tar xvfzp $DownloadsPath/$DrupalPkgFile -C $DownloadsPath
   rm $DownloadsPath/$DrupalPkgBase/.htaccess
+  rm $DownloadsPath/$DrupalPkgBase/sites/example.sites.php
   mv $DownloadsPath/$DrupalPkgBase $DownloadsPath/$LocalDrupal
   cd $DownloadsPath
   tar cfz $LocalDrupal.tar.gz $LocalDrupal
