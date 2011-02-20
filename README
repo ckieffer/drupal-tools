@@ -1,19 +1,60 @@
-A collection of scripts to assist in the management of a local/remote Drupal 6 or 7 instances via Subversion
+Scripts to assist in the management of local and remote Drupal 6 and 7 updates via Subversion.
 
 Author: Chad Kieffer, ckieffer at gmail dot com
 
-
-USE
-
-1) Remove the .default extension on drupal_info.sh
-
-2) Edit drupal_info.sh, add local and remote path information for your Drupal instance
-
-3) Download Drupal core/module updates to $DownloadsPath, then run one of the following
+The scripts currently supports one local instance of Drupal 6 and one instance of Drupal 7. Save 
+Drupal core and module updates to a standard directory and run the appropriate script.
 
 
-drupal_update.sh
-Update Drupal core installation 
+OVERVIEW
 
-drupal_module_update.sh
-Update a shared or site-specific Drupal 6/7 module locally, then remotely via SSH and SVN
+drupal_update.sh does the following:
+
+Before using this script, be sure that you've set Subversion to ignore local files that shouldn't 
+be added to the repository (i.e. settings.php, symlinks, etc.). If you haven't, the script may add 
+and commit files you don't want in your repo.
+
+1) Moves the core update package to tmp and unpacks it.
+2) Removes the .htaccess and sites/example.sites.php files.
+3) Zips the modified core package and unpacks over the local install.
+4) SVN adds any new files.
+5) Pauses and prompts you to run update.php locally and test.
+6) Checks in the modified and new files upon confirmation.
+7) Prompts to run SVN update against the remote installation.
+
+drupal_module_update.sh does the following:
+
+1) Moves the module update package to either sites/all/modules or sites/yourdomain.com/modules and 
+unpacks it.
+2) SVN adds any new files.
+3) Pauses and prompts you to run update.php locally and test.
+4) Checks in modified and new files upon confirmation. 
+5) Prompts to run SVN update against the remote installation.
+
+
+CONFIGURATION AND USE
+
+1) Remove the .default extension froma drupal_info.sh
+
+2) Edit drupal_info.sh, add local and remote path information for your Drupal 6 and 7 instance. 
+Add SSH server and username for remote server.
+
+3) Download Drupal core/module updates to $DownloadsPath, then run one of the following:
+
+% drupal_update.sh         < Update Drupal core installation 
+
+% drupal_module_update.sh  < Update shared or site-specific module 
+
+
+ROADMAP
+
+- Delete deprecated package files from SVN via svn remove.
+
+
+CHANGE LOG
+
+2011-02-11 version 0.8
+- Added support for Drupal 7. 
+- Auto-detect version.
+- Automatically add new files for Drupal core updates.
+- Fix include of drupal_info.sh to allow aliased script execution to work.

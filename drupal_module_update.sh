@@ -35,7 +35,8 @@ export PATH
 ###################################################################################################
 
 # Include Drupal path and remote server connection settings
-source ./drupal_info.sh
+ScriptDir=`dirname $0`
+source $ScriptDir/drupal_info.sh
 
 # Determine the first module downloaded to and listed in $DownloadsPath
 DownloadsPkgFilePath=$(ls $DownloadsPath/*-*.x-*.tar.gz | head -n 1)
