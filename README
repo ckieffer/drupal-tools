@@ -2,7 +2,7 @@ Scripts to assist in the management of local and remote Drupal 6 and 7 updates v
 
 Author: Chad Kieffer, ckieffer at gmail dot com
 
-The scripts currently supports one local instance of Drupal 6 and one instance of Drupal 7. Save 
+These scripts currently supports one local instance of Drupal 6 and one instance of Drupal 7. Save 
 Drupal core and module updates to a standard directory and run the appropriate script.
 
 
@@ -10,9 +10,7 @@ OVERVIEW
 
 drupal_update.sh does the following:
 
-Before using this script, be sure that you've set Subversion to ignore local files that shouldn't 
-be added to the repository (i.e. settings.php, symlinks, etc.). If you haven't, the script may add 
-and commit files you don't want in your repo.
+Before using the update Drupal core script, be sure that you've set your Subversion repository to ignore local files that you don't want to add (i.e. settings.php, symlinks, etc.). If you don't, the script may add and commit files you don't want in your repo. With that out of the way, here are the scripts and a what they do.
 
 1) Moves the core update package to tmp and unpacks it.
 2) Removes the .htaccess and sites/example.sites.php files.
@@ -49,6 +47,9 @@ Add SSH server and username for remote server.
 ROADMAP
 
 - Delete deprecated package files from SVN via svn remove.
+- Provide Drush integration to initiate update.php, etc.
+- Cleanup and release a "create new multisite instance" script.
+- Add theme update/install support.
 
 
 CHANGE LOG

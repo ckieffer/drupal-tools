@@ -55,7 +55,7 @@ elif [ "$Version" == 6 ]; then
   LocalDrupal=$LocalDrupal6
   RemoteDrupal=$RemoteDrupal6
 else 
-	echo -e "Unable to detemine version."
+	echo -e "Unable to detemine Drupal module version."
 	echo -e "PkgFileName: $PkgFileName"
 	echo -e "PkgBaseName: $PkgBaseName"
 	echo -e "ModuleName: $ModuleName"
@@ -78,7 +78,13 @@ else
 fi
 
 # Is this a shared or site-specific module?
-echo -ne "\nEnter site (ex. MySite.com) or leave empty for all: "
+if [ -d "$LocalSites/all/modules/$ModuleName" ]; then
+  Dest="$ModuleName is installed in sites/all, confirm [enter]:"
+else 
+  Dest="$ModuleName not found in sites/all, enter site name (ex. MySite.com):"
+fi
+
+echo -ne "\n $Dest "
 read Site
 
 # Set local and remote paths
@@ -103,7 +109,7 @@ update_module()
   # Prompt to test new/updated module locally
   echo -e "\n Visit the local Drupal upgrade.php script or install the module."
   echo -e "\n Take a moment to test this update locally before committing."
-  echo -ne "\nReady to commit it? (y/n): "
+  echo -ne "\n Ready to commit it? (y/n): "
   read Proceed
   
   # Proceed with commit
@@ -145,7 +151,7 @@ if [ -e "$DownloadsPkgFilePath" ]; then
   
     # Install as a new module?
     if [ -d $LocalTgtPath ]; then
-      echo -ne "Do you want to install $ModuleName there? (y/n): "
+      echo -ne " Do you want to install $ModuleName there? (y/n): "
       read $Install
       if [ "$Install" == "n" ]; then
         echo -e "\n Okay, maybe later then."
@@ -160,7 +166,7 @@ if [ -e "$DownloadsPkgFilePath" ]; then
   exit 0
   
 else
-  echo -e "\n\nError: A module package wasn't found."
-  echo -e "\nDid you save the update package to $DownloadsPath?"
+  echo -e "\n\n Error: A module package wasn't found."
+  echo -e "\n Did you save the update package to $DownloadsPath?"
   exit 1
 fi

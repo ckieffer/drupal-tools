@@ -64,7 +64,7 @@ if [ -e "$DrupalPkg" ]; then
   # Unpack core update package and remove files we don't want overwritten
   tar xfzp $DrupalPkg -C $DownloadsPath
   rm $DownloadsPath/$DrupalPkgBase/.htaccess
-  if [ -f $DownloadsPath/$DrupalPkgBase/sites/example.sites.php ]; then
+  if [ -e $DownloadsPath/$DrupalPkgBase/sites/example.sites.php ]; then
     rm $DownloadsPath/$DrupalPkgBase/sites/example.sites.php
   fi
   mv $DownloadsPath/$DrupalPkgBase $DownloadsPath/$LocalDrupal
